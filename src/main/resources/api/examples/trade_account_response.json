@@ -1,0 +1,54 @@
+{
+	"tradeOrganization":{
+		"ACEID": 1234,
+		"ORGName": "Org Name",
+		"partnerType": "Broker",
+		"status": "Active",
+		"taxNumber": 12345,
+		"taxType": ""
+	}, 
+	"businessAddress":{
+		"addressType": "Mailing", 
+		"careOfName": "Superintendent", 
+		"houseNumber1": "1234", 
+		"building": "", 
+		"room": "", 
+		"floor": "", 
+		"addressStreet1": "1234 Main St", 
+		"addressStreet2": "", 
+		"addressStreet3": "", 
+		"POBox": "", 
+		"city": "Halifax", 
+		"region": "", 
+		"zipcode": 12345, 
+		"county": "",
+		"country": "US", 
+		"contactInformation": {
+      "telephoneNumber": "1234567890",
+	    "telephoneExtension": "",
+	    "faxNumber": "",
+	    "faxExtension": "",
+	    "email": ""
+		}
+	}, 
+	"businessIdentification": {
+		"identificationType": "", 
+		"identificationNumber": "", 
+		"validFrom": "", 
+		"validUntil": "", 
+		"identificationIssuer": "", 
+		"countryISO": "", 
+		"region": ""
+	},
+	"customization":{
+		"key": "", 
+		"indicator": "", 
+		"value": "", 
+		"firstAmount": "", 
+		"secondAmount": "", 
+		"validFrom": "", 
+		"validTo": "", 
+		"entryDate": "", 
+		"status": ""
+	}
+}

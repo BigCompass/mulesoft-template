@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:as400="http://www.mulesoft.org/schema/mule/as400" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/as400 http://www.mulesoft.org/schema/mule/as400/current/mule-as400.xsd">
+	<flow name="health-check-flow" doc:id="5d10dbf4-98ec-4909-ba35-09fd6b26b532" >
+		<http:listener doc:name="Listener" doc:id="77a5dfba-aa7c-412a-b4c3-77a6167ff848" config-ref="HTTP_Listener_config" path="/health" allowedMethods="GET"/>
+		<set-payload value='System is up' doc:name="Set Payload" doc:id="e0a18610-9dc7-413b-b670-da10303f39c7" mimeType="application/json"/>
+	</flow>
+	<flow name="sf-flow" doc:id="d5620db4-bdbf-4937-84b4-9ada48fd75ed" >
+		<http:listener doc:name="Listener" doc:id="f7813d7d-fa31-49cf-82f0-da2c1573d293" config-ref="HTTP_Listener_config" path="/sf"/>
+		<logger level="INFO" doc:name="Logger" doc:id="26c19e41-2fdc-4c32-9f3b-a98e3361e47f" message="START: retrieve SF timestamp"/>
+		<salesforce:get-server-timestamp doc:name="Get server timestamp" doc:id="623dac58-adf6-458d-9236-b0ac5923610e" config-ref="Salesforce_Config"/>
+		<ee:transform doc:name="Transform Message" doc:id="187c2e54-fca4-47b1-86e0-c80f54e686b3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="35acb227-a041-431a-be43-ca27879b465a" message="END: retrieve SF timestamp : #[payload]"/>
+	</flow>
+	<flow name="db-flow" doc:id="b76b4610-b2af-4f4c-ad5c-383625d2b7e2" >
+		<http:listener doc:name="Listener" doc:id="dc380011-93c8-4462-94fc-e9b3871dfecc" config-ref="HTTP_Listener_config" path="/db"/>
+		<logger level="INFO" doc:name="Logger" doc:id="f8a89f7f-c6f4-4cc5-b671-9b8d566f3eeb" message="START: DB connection"/>
+		<set-variable value="connectionPooledSmileAS400DataSource" doc:name="Set Variable" doc:id="6c62819e-7142-4c27-aabb-745f954845ba" variableName="db-config"/>
+		<db:select doc:name="Select from DWPEBMHH" doc:id="6d94d3c0-8229-423e-a6ed-197683198d18" config-ref="Database_Config">
+			<db:sql >SELECT * FROM ${secure::db.smile.sql.library.name}.DWPEBMHH FETCH FIRST 3 ROWS ONLY</db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Payload to JSON" doc:id="9c2a1b6d-d8af-48ed-9b2b-6348f6c51f2d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Log Payload" doc:id="7c6bf0de-2f82-493a-b62a-2e7ec103de4b" message="Response result-set from DB : #[payload]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="8bddb7c4-86a4-4ca6-a39c-ef5b52a7a84a" message="END: DB connection"/>
+	</flow>
+	<flow name="health-checkFlow" doc:id="20d81bf7-59bb-4449-bf13-0f0cf811db0f" >
+		<ee:transform doc:name="Transform Message" doc:id="5b0a4af1-f67d-4308-8f6a-913b4599b017" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+import modules::library as lib
+---
+lib::formatDate("/  /")]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

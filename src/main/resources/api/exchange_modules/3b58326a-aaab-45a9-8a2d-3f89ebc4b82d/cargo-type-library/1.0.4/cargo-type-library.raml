@@ -1,0 +1,145 @@
+#%RAML 1.0 Library
+usage: API Datatypes for the Cargo domain
+
+types: 
+  TradeOrganization:
+    properties: 
+      PAID?: string
+      ACEID?: string
+      isComplete: boolean
+      partnerType: string
+      ORGName: string
+      DIVName?: string
+      AKAName?: string
+      DBAName?: string
+      legalForm: string
+      fiscalYearEnd?: date-only
+      taxType: string
+      taxNumber: string
+      transportMode: string
+      relatedCompanies?: RelatedEntity[]
+      isActiveBond?: boolean
+      notifyBy?: string
+      status?: string
+      foundedOn: date-only
+      filerCode: number
+      DPSite: number
+      NATSanc?: string
+      issuedOn?: date-only
+    
+  HazmatInsurance:
+    properties: 
+      ACEID?: string
+      parentACEID?: string
+      provider: string
+      policyNumber: string
+      issuedOn: date-only
+      expiresOn: date-only
+      amount: string
+
+  UserCredential:
+    properties: 
+      now: datetime
+      hostname?: string
+      userID: string
+      httpSessionID?: string
+      messageID?: string
+      applicationID?: string
+      partnerID?: string
+      transactionID?: string
+      targetAccountID?: string
+      ACEID?: string
+      status?: string
+
+  BusinessAddress:
+    properties: 
+      addressType: string
+      careOfName?: string
+      city: string
+      zipcode: string
+      POBox?: string
+      addressStreet1: string
+      addressStreet2?: string
+      addressStreet3?: string
+      FIRMSCode?: string
+      houseNumber1: string
+      building?: string
+      room?: string
+      region: string
+      country: string
+      remarks?: string
+      floor?: string
+      county?: string
+      contactInformation?: ContactInformation
+      houseNumber2?: string
+
+  ContactInformation:
+    properties: 
+      telephoneNumber?: string
+      telephoneExtension?: string
+      faxNumber?: string
+      faxExtension?: string
+      email?: string
+      URI?: string
+
+  RelatedEntity:
+    properties: 
+      parentACID?: string
+      childACEID?: string
+      relationshipType: string
+      functionKey: string
+      functionName: string
+      validFrom: date-only
+      validUntil: date-only
+
+  CompanyPosition:
+    properties: 
+      entity: RelatedEntity
+      portalID: string
+      firstName: string
+      middleName: string
+      lastName: string
+      organizationName: string
+      isComplete: boolean
+      titleKey: string
+      dateOfBirth: date-only
+      identificationType: string
+      identificationNumber: string
+      businessPartnerType: string
+      address: BusinessAddress
+      taxType: string
+      taxNumber: string
+  
+  BusinessIdentification:
+    properties: 
+      identificationType: string
+      identificationNumber: string
+      identificationIssuer?: string
+      validFrom?: date-only
+      validUntil?: date-only
+      countryISO?: string
+      region?: string
+
+  Comment:
+    properties:
+      name: string
+      comment: string
+      createdOn: date-only
+      createdBy: string
+
+  Customization:
+    properties:
+      key: string
+      indicator: string
+      value: string
+      firstAmount: string
+      secondAmount: string
+      entryDate: date-only
+      validFrom: date-only
+      validTo: date-only
+      status: string
+
+  NameValuePair:
+    properties: 
+      key: string
+      value: string

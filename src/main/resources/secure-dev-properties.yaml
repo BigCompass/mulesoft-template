@@ -1,0 +1,18 @@
+api:
+  id: "1234"
+  
+sfdc:
+  username: "![x/paLK8F1GTvh8XOaYfbI3AIfRcx94qioGLt4AsQBLfUgSQqYSRX27kRxp8yhxkR]"
+  password: "![fDGJ7Hgd0x+QA+aV7QHdlaMgpzoqoOP1]"
+  security.token: "![xgnlVBkK64N7rRyNxPA+r/3hVfrgYX9Jl+yzyM4U5kw=]"
+  auth.url: "![V5hHt7K+X6iMndHanqnwSY4CCMozcM3TEj4xZdJOvQiCLsBcTYuwXvtjh3G7qQ0sz5be8aWlF8Q=]"
+  
+ # SMILE AS400 Database details
+db:
+  smile:
+    host: "testadvantech.deltadentalwi.com"
+    user: "![vzCMHbTNxnza+qo1GZmXaQ==]"
+    password: "![QBapxUcImZrJh1jhH1zr5w==]"
+    utilslibrary.name: "TESTXX"
+    program.library.name: "TSTWEBPGM"
+    sql.library.name: "TBQA36"

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<error-handler name="sapi_error_handler" doc:id="c4d37936-bdca-4793-987f-5ffbeded3fe8" >
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="4a0f56f3-bb98-4c8a-8919-782bde88c97b" type="APIKIT:BAD_REQUEST" >
+			<flow-ref doc:name="Prepare error response flow" doc:id="6a897089-962b-40ea-991d-de77ef7bf68d" name="prepare-error-response-subflow" />
+			<set-variable value="400" doc:name="Set HttpStatus " doc:id="86bb7a09-d43c-4b05-938a-9bdbfb802a5b" variableName="httpStatus" />
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f29be545-b226-4a0b-9730-0759c78b8485" type="APIKIT:NOT_FOUND" >
+			<flow-ref doc:name="Prepare error response flow" doc:id="db85b527-4afd-43d2-bb62-1b844ce3c154" name="prepare-error-response-subflow" />
+			<set-variable value="404" doc:name="Set HttpStatus " doc:id="d0ee5b51-8d26-4bc2-a028-0b9e0fab3def" variableName="httpStatus" />
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f5c26a25-feaa-45f0-9a1c-682bf222f138" type="APIKIT:METHOD_NOT_ALLOWED" >
+			<flow-ref doc:name="Prepare error response flow" doc:id="9b63a28e-62b1-4c8e-9d93-179c10699ea0" name="prepare-error-response-subflow" />
+			<set-variable value="405" doc:name="Set HttpStatus " doc:id="9ebc0ab1-1040-4a70-be4a-ab11ab33380b" variableName="httpStatus" />
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="9de554f2-edef-48a3-8d00-f7ddee236a30" type="APIKIT:NOT_ACCEPTABLE" >
+			<flow-ref doc:name="Prepare error response flow" doc:id="f9137c63-f0d2-43e0-b42a-5e4e8f2798ab" name="prepare-error-response-subflow" />
+			<set-variable value="406" doc:name="Set HttpStatus " doc:id="9d7b3a6a-5250-4429-a3b8-20ff8b9c5666" variableName="httpStatus" />
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="280090a6-f60f-41bd-8474-0f429c81b29a" type="APIKIT:UNSUPPORTED_MEDIA_TYPE" >
+			<flow-ref doc:name="Prepare error response flow" doc:id="26920633-962c-462b-9db8-8adea62e022d" name="prepare-error-response-subflow" />
+			<set-variable value="415" doc:name="Set HttpStatus " doc:id="c438d4ca-7329-4d51-90c7-9beacf39c14d" variableName="httpStatus" />
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="904be8bb-49bc-4d56-9c47-ff9d0ffbe488" type="APIKIT:NOT_IMPLEMENTED" >
+			<flow-ref doc:name="Prepare error response flow" doc:id="61c5b583-e296-404b-9341-7fa809da9b60" name="prepare-error-response-subflow" />
+			<set-variable value="501" doc:name="Set HttpStatus " doc:id="41aaa133-7b0c-428f-b479-6edfda5d29fc" variableName="httpStatus" />
+		</on-error-continue>
+		<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="6656c400-a8fa-4c38-a78a-047b58eab0d5" type="ANY" >
+			<flow-ref doc:name="Prepare error response flow" doc:id="81bb3b58-1551-427e-8d31-7fce6988e2b4" name="prepare-error-response-subflow" />
+			<set-variable value="500" doc:name="Set HttpStatus " doc:id="408d4800-0b33-476c-bb1d-53c821004333" variableName="httpStatus" />
+		</on-error-continue>
+	</error-handler>
+	<sub-flow name="prepare-error-response-subflow" doc:id="b33fa232-c8f9-4cbb-95e1-a27ae8409dc8" >
+		<ee:transform doc:name="Prepare error response" doc:id="99d31be2-ed55-4c1a-abb8-71192c31f26a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"success": false,
+	"data": [],
+  	"exceptions" : [
+  		{
+  			"errorCode": error.errorType.identifier default "UNKNOWNERROR",
+			"errorType": 'ERROR',
+			"errorMessage": error.detailedDescription
+  		}
+  	]	
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</sub-flow>
+</mule>

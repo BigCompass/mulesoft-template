@@ -1,0 +1,107 @@
+#%RAML 1.0
+---
+baseUri: https://anypoint.mulesoft.com/mocking/api/v1/links/76098e33-f8fd-4b48-8458-9cd9197bedbf/ # 
+title: Trade Account Management
+version: 1.0
+
+uses:
+  typeLib: exchange_modules/3b58326a-aaab-45a9-8a2d-3f89ebc4b82d/cargo-type-library/1.0.4/cargo-type-library.raml
+
+/health:
+  get:
+    description: "API Health Check"
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              {"status":"pass"}
+      503:
+        body:
+          application/json:
+            example: |
+              {"status":"fail"}
+
+/tradeaccounts:
+  post:
+    description: "Federate new Trade Organization record to CBP systems"
+    body:
+      application/json:
+        properties: 
+          tradeOrganization: typeLib.TradeOrganization
+          userCredential: typeLib.UserCredential
+          businessAddress: typeLib.BusinessAddress
+          businessIdentification: typeLib.BusinessIdentification
+          customization?: typeLib.Customization
+          additionalProperties?: typeLib.NameValuePair
+    responses: 
+      200:
+        body:
+          application/json:
+            example: |
+              {"ACEID": "abc123"}
+      400:
+        body:
+          application/json:
+            example: |
+              {"ACEID": "abc123", "error": {"code": "123", "message": "An error message"}}
+      500:
+        body:
+          application/json:
+            example: |
+              {"ACEID": "abc123", "error": {"code": "123", "message": "An error message"}}
+  /{id}:
+    uriParameters:
+      id:
+        description: "ACE Id"
+        type: string
+    get:
+      description: "Retreive trade organization for a particular ACE ID"
+      responses:
+        200:
+          body:
+            application/json:
+              example: !include examples/trade_account_response.json
+        404:
+          body:
+            application/json:
+              example: |
+                {"ACEID": "abc123", "error": {"code": "123", "message": "An error message"}}
+        500:
+          body:
+            application/json:
+              example: |
+                {"ACEID": "abc123", "error": {"code": "123", "message": "An error message"}}
+                
+    put:
+      description: "Federate update of existing Trade Organization record to CBP systems"
+      body:
+        application/json:
+          properties: 
+            tradeOrganization: typeLib.TradeOrganization
+            userCredential: typeLib.UserCredential
+            businessAddress: typeLib.BusinessAddress
+            businessIdentification: typeLib.BusinessIdentification
+            customization?: typeLib.Customization
+            additionalProperties?: typeLib.NameValuePair
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {"ACEID": "abc123"}
+        400:
+          body:
+            application/json:
+              example: |
+                {"ACEID": "abc123", "error": {"code": "123", "message": "An error message"}}
+        404:
+          body:
+            application/json:
+              example: |
+                {"ACEID": "abc123", "error": {"code": "123", "message": "An error message"}}
+        500:
+          body:
+            application/json:
+              example: |
+                {"ACEID": "abc123", "error": {"code": "123", "message": "An error message"}}

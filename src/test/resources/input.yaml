@@ -1,0 +1,5 @@
+sfdc:
+  username: "middleware_support@deltadentalwi.com.sscdev"
+  password: "horseapplesoup757"
+  security.token: "tmHbud4jAOYSnfMotTsGbeYYo"
+  auth.url: "https://test.salesforce.com/services/Soap/u/46.0"

@@ -1,0 +1,8 @@
+encrypted:
+    value1: "![nHWo5JhNAYM+TzxqeHdRDXx15Q5R56YVGiQgXCoBCew=]"
+    value2: "![nHWo6XyCADP+TzxqeHdRDXx15Q5R56YVGiQgXCoDFaj=]"
+
+testPropertyA: "testValueA"
+testPropertyB: "testValueB"
+
+autodiscovery.api.id: "1234"
